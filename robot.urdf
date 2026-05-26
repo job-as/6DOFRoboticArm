@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<robot name="cad_robot">
+  <link name="base">
+    <visual>
+      <geometry>
+        <mesh filename="base.stl" scale="0.001 0.001 0.001"/> <!-- mm to m -->
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="arm">
+    <visual>
+      <geometry>
+        <mesh filename="arm.stl" scale="0.001 0.001 0.001"/> <!-- mm to m -->
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="joint1" type="revolute">
+    <parent link="base"/>
+    <child link="arm"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/> <!-- adjust pivot -->
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="10" velocity="1"/>
+  </joint>
+</robot>

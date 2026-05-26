@@ -1,0 +1,224 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\author{Job A}
+\title{6DOF Robotic Arm}
+\begin{document}
+\textbf{DH-parameters of the robot}
+\begin{itemize}
+\item $a_i$:\textrightarrow the distance between $z_{i-1}$ and $z_i$ along $\,\, x_i$.
+\item $\alpha_i$:\textrightarrow the angle from $z_{i-1}$ to $z_i$ about $\,\, x_i$.
+\item $d_i$:\textrightarrow  the distance between $x_{i-1}$ and $x_{i}$ along $\,\, z_{i-1}$.
+\item $\theta_i$:\textrightarrow the angle from $x_{i-1}$ to $x_{i}$ about $\,\, z_{i-1}$.
+\end{itemize}
+\vspace*{10pt}
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Link & $a_i$ & $\alpha_i$ & $d_i$ & $\theta_i$ \\ 
+\hline 
+1 & 0 & $-90^0$ & $d_1$ & $\theta_1$ \\ 
+\hline 
+2 & $a_2$ & $0^0$ & 0 & $\theta_2 - 90^0$ \\ 
+\hline 
+3 & 0 & $-90^0$ & 0 & $\theta_3$ \\ 
+\hline 
+4 & 0 & $90^0$ & $d_4$ & $\theta_4$ \\ 
+\hline 
+5 & 0 & $-90^0$ & 0 & $\theta_5$ \\ 
+\hline 
+6 & 0 & $0^0$ & $d_6$ & $\theta_6 + 90^0$ \\ 
+\hline 
+\end{tabular} 
+\vspace{10pt}
+
+\textbf{The Transformation Matrix for each Link} \\
+	\[ A_i = Rot_{z,\theta_i} \,\, Trans_{z,d_i} \,\, Trans_{x,a_i} \,\, Rot_{x, \alpha_i} \]
+	\begin{align*}
+		A_i &= \begin{bmatrix}
+			c_{\theta_i} & -s_{\theta_i} & 0 & 0 \\
+			s_{\theta_i} & c_{\theta_i} & 0 & 0 \\
+			0 & 0 & 1 & 0 \\
+			0 & 0 & 0 & 1 \\
+		\end{bmatrix}\begin{bmatrix}
+			1 & 0 & 0 & 0 \\
+			0 & 1 & 0 & 0 \\
+			0 & 0 & 1 & d_i \\
+			0 & 0 & 0 & 1 \\
+		\end{bmatrix}\begin{bmatrix}
+			1 & 0 & 0 & a_i \\
+			0 & 1 & 0 & 0 \\
+			0 & 0 & 1 & 0 \\
+			0 & 0 & 0 & 1 \\
+		\end{bmatrix}\begin{bmatrix}
+			1 & 0 & 0 & 0 \\
+			0 & c_{\alpha_i} & -s_{\alpha_i} & 0  \\
+			0& s_{\alpha_i} & c_{\alpha_i} & 0 \\
+			0 & 0 & 0 & 1 \\
+		\end{bmatrix} \\
+		&= \begin{bmatrix}
+		 c_{\theta_i} & -s_{\theta_i}c_{\alpha_i} & s_{\theta_i}s_{\alpha_i} & a_ic_{\theta_i}\\
+		 s_{\theta_i} & c_{\theta_i}c_{\alpha_i} & -c_{\theta_i}s_{\alpha_i} & a_is_{\theta_i}\\
+		 0 & s_{\alpha_i} & c_{\alpha_i} & d_i\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+
+	\textbf{Transformation Matrix between Base and Link One}
+	\begin{align*}
+	A_1= \begin{bmatrix}
+		 c_{\theta_1} & 0 & -s_{\theta_1} & 0\\
+		 s_{\theta_1} & 0 & c_{\theta_1} & 0\\
+		 0 & -1 & 0 & d_1\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+	
+	\textbf{Transformation Matrix between Link One and Two}
+	\begin{align*}
+	A_2&= \begin{bmatrix}
+		 c_{\theta_2 - 90^0} & -s_{\theta_2 - 90^0} & 0 & a_2c_{\theta_2 - 90^0}\\
+		 s_{\theta_2 - 90^0} & c_{\theta_2 - 90^0} & 0 & a_2s_{\theta_2 - 90^0}\\
+		 0 & 0 & 1 & 0\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}\\
+		&=\begin{bmatrix}
+		 s_{\theta_2} & c_{\theta_2} & 0 & a_2s_{\theta_2}\\
+		 -c_{\theta_2} & s_{\theta_2} & 0 & -a_2c_{\theta_2}\\
+		 0 & 0 & 1 & 0\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+	
+	\textbf{Transformation Matrix between Link Two and Three}
+	\begin{align*}
+	A_3= \begin{bmatrix}
+		 c_{\theta_3} & 0 & -s_{\theta_3} & 0\\
+		 s_{\theta_3} & 0 & c_{\theta_3} & 0\\
+		 0 & -1 & 0 & 0\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+	
+	\textbf{Transformation Matrix between Link Three and Four}
+	\begin{align*}
+	A_4= \begin{bmatrix}
+		 c_{\theta_4} & 0 & s_{\theta_4} & 0\\
+		 s_{\theta_4} & 0 & -c_{\theta_4} & 0\\
+		 0 & 1 & 0 & d_4\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+	
+	\textbf{Transformation Matrix between Link Four and Five}
+	\begin{align*}
+	A_5= \begin{bmatrix}
+		 c_{\theta_5} & 0 & -s_{\theta_5} & 0\\
+		 s_{\theta_5} & 0 & c_{\theta_5} & 0\\
+		 0 & -1 & 0 & 0\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+	
+	\textbf{Transformation Matrix between Link One and Two}
+	\begin{align*}
+	A_6 &= \begin{bmatrix}
+		 c_{\theta_6 + 90^0} & -s_{\theta_6 + 90^0} & 0 & 0\\
+		 s_{\theta_6 + 90^0} & c_{\theta_6 + 90^0} & 0 & 0\\
+		 0 & 0 & 1 & d_6\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix} \\
+		&= \begin{bmatrix}
+		 -s_{\theta_6} & -c_{\theta_6} & 0 & 0\\
+		 c_{\theta_6} & -s_{\theta_6} & 0 & 0\\
+		 0 & 0 & 1 & d_6\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+\textbf{Forward Kinematics of the robot}
+\begin{align*}
+A^0_6 &= A_1A_2A_3A_4A_5A_6 \\
+&=  \begin{bmatrix}
+	r_{11} & r_{12} & r_{13} & r_{14} \\
+	r_{21} & r_{22} & r_{23} & r_{34} \\
+	r_{31} & r_{32} & r_{33} & r_{34} \\
+	0 & 0 & 0 & 1 \\
+\end{bmatrix} \\
+\end{align*}
+\begin{align*}
+r_{11} &= -((s_{\theta_1}s_{\theta_4} + s_{\theta_2 + \theta_3}c_{\theta_1}c_{\theta_4})c_{\theta_5} + s_{\theta_5}c_{\theta_1}c_{\theta_2 + \theta_3})s_{\theta_6} + (s_{\theta_1}c_{\theta_4} - s_{\theta_4}s_{\theta_2 + \theta_3}c_{\theta_1})c_{\theta_6} \\
+r_{12} &= -((s_{\theta_1}s_{\theta_4} + s_{\theta_2 + \theta_3}c_{\theta_1}c_{\theta_4})c_{\theta_5} + s_{\theta_5}c_{\theta_1}c_{\theta_2 + \theta_3})c_{\theta_6} - (s_{\theta_1}c_{\theta_4} - s_{\theta_4}s_{\theta_2 + \theta_3}c_{\theta_1})s_{\theta_6}) \\
+r_{13} &= -(s_{\theta_1}s_{\theta_4} + s_{\theta_2 + \theta_3}c_{\theta_1}c_{\theta_4})s_{\theta_5} + c_{\theta_1}c_{\theta_5}c_{\theta_2 + \theta_3} \\
+r_{14} &=a_2s_{\theta_2}c_{\theta_1} + d_4c_{\theta_1}c_{\theta_2 + \theta_3} - d_6((s_{\theta_1}s_{\theta_4} + s_{\theta_2 + \theta_3}c_{\theta_1}c_{\theta_4})s_{\theta_5} - c_{\theta_1}c_{\theta_5}c_{\theta_2 + \theta_3})\\
+r_{21} &=-((s_{\theta_1}s_{\theta_2 + \theta_3}c_{\theta_4} - s_{\theta_4}c_{\theta_1})c_{\theta_5} + s_{\theta_1}s_{\theta_5}c_{\theta_2 + \theta_3})s_{\theta_6} - (s_{\theta_1}s_{\theta_4}s_{\theta_2 + \theta_3} + c_{\theta_1}c_{\theta_4})c_{\theta_6}\\
+r_{22} &=-((s_{\theta_1}s_{\theta_2 + \theta_3}c_{\theta_4} - s_{\theta_4}c_{\theta_1})c_{\theta_5} + s_{\theta_1}s_{\theta_5}c_{\theta_2 + \theta_3})c_{\theta_6} + (s_{\theta_1}s_{\theta_4}s_{\theta_2 + \theta_3} + c_{\theta_1}c_{\theta_4})s_{\theta_6}) \\
+r_{23} &=-(s_{\theta_1}s_{\theta_2 + \theta_3}c_{\theta_4} - s_{\theta_4}c_{\theta_1})s_{\theta_5} + s_{\theta_1}c_{\theta_5}c_{\theta_2 + \theta_3} \\
+r_{24} &=a_2s_{\theta_1}s_{\theta_2} + d_4s_{\theta_1}c_{\theta_2 + \theta_3} - d_6((s_{\theta_1}s_{\theta_2 + \theta_3}c_{\theta_4} - s_{\theta_4}c_{\theta_1})s_{\theta_5} - s_{\theta_1}c_{\theta_5}c_{\theta_2 + \theta_3})\\
+r_{31} &=(s_{\theta_5}s_{\theta_2 + \theta_3} - c_{\theta_4}c_{\theta_5}c_{\theta_2 + \theta_3})s_{\theta_6} - s_{\theta_4}c_{\theta_6}c_{\theta_2 + \theta_3}\\
+r_{32} &=(s_{\theta_5}s_{\theta_2 + \theta_3} - c_{\theta_4}c_{\theta_5}c_{\theta_2 + \theta_3})c_{\theta_6} + s_{\theta_4}s_{\theta_6}c_{\theta_2 + \theta_3}\\
+r_{33} &=-s_{\theta_5}c_{\theta_4}c_{\theta_2 + \theta_3} - s_{\theta_2 + \theta_3}c_{\theta_5}\\
+r_{34} &=a_2c_{\theta_2} + d_1 - d_4s_{\theta_2 + \theta_3} - d_6(s_{\theta_5}c_{\theta_4}c_{\theta_2 + \theta_3} + s_{\theta_2 + \theta_3}c_{\theta_5}) \\
+\end{align*}
+
+\textbf{The position of the end-effector is given by:}
+\begin{align*}
+ef_{position} = \begin{bmatrix}
+	r_{14} & r_{24} & r_{34}
+	\end{bmatrix}
+\end{align*}
+\textbf{The orientation of the end-effector is given by:}
+\begin{align*}
+ef_{orientaion} = \begin{bmatrix}
+r_{11} & r_{12} & r_{13} \\
+	r_{21} & r_{22} & r_{23} \\
+	r_{31} & r_{32} & r_{33}
+\end{bmatrix}
+\end{align*}
+The angle for the orientation can be calculated from $ef_{orientaion}$ matrix using Euler Angles\textbf{(ZYZ)} or using Roll-Pith-Yaw Angles\textbf{(ZYX)}
+\begin{enumerate}
+\item \textbf{Euler Angles}:
+\begin{align*}
+R &= R_{Z,\phi}R_{Y,\theta}R_{Z,\psi}
+&= \begin{bmatrix}
+c_{\phi}c_{\theta}c_{\psi} -  s_{\phi}s_{\psi} & - c_{\phi}c_{\theta}s_{\psi} -  s_{\phi}c_{\psi} & c_{\phi}s_{\theta} \\
+s_{\phi}c_{\theta}c_{\psi} + c_{\phi}s_{\psi} & - s_{\phi}c_{\theta}s_{\psi} + c_{\phi}c_{\psi} & s_{\phi}s_{\theta} \\
+- s_{\theta}c_{\psi} &  s_{\theta}s_{\psi} & c_{\theta}
+\end{bmatrix}
+\end{align*}
+By equating $R$ and $ef_{orientaion} = $ \\
+$$R = ef_{orientation}=\begin{bmatrix}
+r_{11} & r_{12} & r_{13} \\
+	r_{21} & r_{22} & r_{23} \\
+	r_{31} & r_{32} & r_{33}
+\end{bmatrix}$$
+We can calculate the $\phi$, $\theta$, and $\psi$ angle to represent the orientation of the end effector
+
+\textbf{Case 1}: if both $r_{13}$ and $r_{23}$ aren't \textbf{zero} then $r_{33} \neq \pm 1$
+\begin{align*}
+\theta &= Atan(\pm\sqrt{1-r^2_{33}}, r_{33}) \\
+	For\,\,+ve\,\, \sqrt{1-r^2_{33}} \\
+	\phi &= Atan(r_{23}, r_{13}) \\
+	\psi &= Atan(r_{32}, -r_{31}) \\
+	For\,\,-ve\,\, \sqrt{1-r^2_{33}} \\
+	\phi &= Atan(-r_{23}, -r_{13}) \\
+	\psi &= Atan(-r_{32}, r_{31}) \\
+\end{align*}
+
+\textbf{Case 2}: if both $r_{13}$ and $r_{23}$ are \textbf{zero} then $r_{33} = \pm 1$. In this case we will have infinitely many solutions for $\phi$ and $\psi$. We may take$\phi = 0^0$ by convention, and define $\psi$.
+\begin{align*}
+\theta &= Acos(\pm r_{33}) = 0^0\,\, or\,\, 180^0\\
+	For\,\, \theta = 0^0 \\
+	\phi +\psi &= Atan(r_{21}, r_{11}) \\
+	&= Atan(-r_{12}, r_{11}) \\
+	For\,\, \theta = 180^0 \\
+	\phi -\psi &= Atan(-r_{12}, -r_{11}) \\
+	&= Atan(-r_{22}, -r_{21}) \\
+\end{align*}
+
+\item \textbf{Roll-Pith-Yaw Angles}:
+\end{enumerate}
+
+\end{document}
+

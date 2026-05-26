@@ -1,0 +1,277 @@
+\documentclass[fleqn,english,11pt,a4paper,landscape]{article}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[top=0.75in,bottom=0.75in,left=0.2in, right=0.2in]{geometry}  % Equal margins on all sides
+
+\begin{document}
+	\textbf{The DH-Parameters}
+	\begin{itemize}
+		\item $a_i$ and $\alpha_i$ \textrightarrow $\,\, x_i$ between $z_i$ and $z_{i-1}$
+		
+		\item $d_i$ and $\theta_i$ \textrightarrow $\,\, z_{i-1}$ between $x_{i-1}$ and $x_{i}$
+	\end{itemize}
+	
+	\vspace{10pt}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		Link & $a_i$ \textrightarrow along $x_i$ & $\alpha_i$ \textrightarrow along $x_i$ & $d_i$ \textrightarrow along $z_{i-1}$ & $\theta_i$ \textrightarrow along $z_{i-1}$ \\
+		\hline
+		1 & $a_1$ : \textrightarrow $\,\, z_1$ and $z_0$  & $\alpha_1$ : \textrightarrow $\,\, z_1$ and $z_0$ & $d_1$ : \textrightarrow $\,\, x_0$ and $x_1$ & $\theta_1$ : \textrightarrow $\,\, x_0$ and $x_1$  \\
+		\hline
+		2 & $a_2$ : \textrightarrow $\,\, z_2$ and $z_1$  & $\alpha_2$ : \textrightarrow $\,\, z_2$ and $z_1$ & $d_2$ : \textrightarrow $\,\, x_1$ and $x_2$ & $\theta_2$ : \textrightarrow $\,\, x_1$ and $x_2$ \\
+		\hline
+		3 & $a_3$ : \textrightarrow $\,\, z_3$ and $z_2$ & $\alpha_3$ : \textrightarrow $\,\, z_3$ and $z_2$ & $d_3$ : \textrightarrow $\,\, x_2$ and $x_3$ & $\theta_3$ : \textrightarrow $\,\, x_2$ and $x_3$ \\
+		\hline
+		4 & $a_4$ : \textrightarrow $\,\, z_4$ and $z_3$  & $\alpha_4$ : \textrightarrow $\,\, z_4$ and $z_3$ & $d_4$ :: \textrightarrow $\,\, x_3$ and $x_4$ & $\theta_4$ : \textrightarrow $\,\, x_3$ and $x_4$ \\
+		\hline
+		5 & $a_5$ : \textrightarrow $\,\, z_5$ and $z_4$ & $\alpha_5$ : \textrightarrow $\,\, z_5$ and $z_4$ & $d_5$ : \textrightarrow $\,\, x_4$ and $x_5$ & $\theta_5$ : \textrightarrow $\,\, x_4$ and $x_5$ \\
+		\hline
+		6 & $a_6$ : \textrightarrow $\,\, z_6$ and $z_5$ & $\alpha_6$ : \textrightarrow $\,\, z_6$ and $z_5$ & $d_6$ : \textrightarrow $\,\, x_5$ and $x_6$ & $\theta_6$ : \textrightarrow $\,\, x_5$ and $x_6$ \\
+		\hline
+	\end{tabular}
+	
+	\vspace{10pt}
+	\textbf{The DH parametrs of the 6-DOF arm} \\
+	
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		Link & $a_i$ & $\alpha_i$ along $x_i$ & $d_i$ along $z_{i-1}$ & $\theta_i$  \\
+		\hline
+		1 & 0  & $-90^0$ & $l_1$ &  $\theta_1$ \\
+		\hline
+		
+		2 & $l_2$ & $0^0$ & $0$ &  $\theta_2$  \\
+		\hline
+		
+		3 & 0 & $-90^0$ &$0$&  $\theta_3$  \\
+		\hline
+		
+		4 & $0$ & $-90^0$ & $0$ &  $\theta_4$  \\
+		\hline
+		
+		5 & $0$ & $90^0$ & $0$&  $\theta_5$  \\
+		\hline
+		
+		6 & $0$ & $0^0$ & $l_6$&  $\theta_6$  \\
+		\hline
+		
+
+	\end{tabular}
+	
+	\vspace*{10pt}
+	\textbf{The Transformation Matrix for each Link} \\
+	\[ A_i = Rot_{z,\theta_i} \,\, Trans_{z,d_i} \,\, Trans_{x,a_i} \,\, Rot_{x, \alpha_i} \] \\
+	\begin{align*}
+		A_i &= \begin{bmatrix}
+			c_{\theta_i} & -s_{\theta_i} & 0 & 0 \\
+			s_{\theta_i} & c_{\theta_i} & 0 & 0 \\
+			0 & 0 & 1 & 0 \\
+			0 & 0 & 0 & 1 \\
+		\end{bmatrix}\begin{bmatrix}
+			1 & 0 & 0 & 0 \\
+			0 & 1 & 0 & 0 \\
+			0 & 0 & 1 & d_i \\
+			0 & 0 & 0 & 1 \\
+		\end{bmatrix}\begin{bmatrix}
+			1 & 0 & 0 & a_i \\
+			0 & 1 & 0 & 0 \\
+			0 & 0 & 1 & 0 \\
+			0 & 0 & 0 & 1 \\
+		\end{bmatrix}\begin{bmatrix}
+			1 & 0 & 0 & 0 \\
+			0 & c_{\alpha_i} & -s_{\alpha_i} & 0  \\
+			0& s_{\alpha_i} & c_{\alpha_i} & 0 \\
+			0 & 0 & 0 & 1 \\
+		\end{bmatrix} \\
+		&= \begin{bmatrix}
+		 c_{\theta_i} & -s_{\theta_i}c_{\alpha_i} & s_{\theta_i}s_{\alpha_i} & a_ic_{\theta_i}\\
+		 s_{\theta_i} & c_{\theta_i}c_{\alpha_i} & -c_{\theta_i}s_{\alpha_i} & a_is_{\theta_i}\\
+		 0 & s_{\alpha_i} & c_{\alpha_i} & d_i\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+
+	\textbf{Transformation Matrix for Link One}
+	\begin{align*}
+	A_1= \begin{bmatrix}
+		 c_{1} & 0 & -s_{1} & 0\\
+		 s_{1} & 0 & c_{1} & 0\\
+		 0 & -1 & 0 & l_1\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+
+	\textbf{Transformation Matrix for Link Two}
+	\begin{align*}
+	A_2= \begin{bmatrix}
+		 c_{2} & -s_{2} & 0 & l_2c_2\\
+		 s_{2} & c_{2} & 0 & l_2s_2\\\
+		 0 & 0 & 1 & 0\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+
+	\textbf{Transformation Matrix for Link There}
+	\begin{align*}
+	A_3= \begin{bmatrix}
+		 c_{3} & 0 & -s_{3} & 0\\
+		 s_{3} & 0 & c_{3} & 0\\
+		 0 & -1 & 0 & 0\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+
+	\textbf{Transformation Matrix for Link Four}
+	\begin{align*}
+	A_4= \begin{bmatrix}
+		 c_{4} & 0 & -s_{4} & 0\\
+		 s_{4} & 0 & c_{4} & 0\\
+		 0 & -1 & 0 & 0\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+
+	\textbf{Transformation Matrix for Link Five}
+	\begin{align*}
+	A_5= \begin{bmatrix}
+		 c_{5} & 0 & s_{5} & 0\\
+		 s_{5} & 0 & -c_{5} & 0\\
+		 0 & 1 & 0 & 0\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+
+	\textbf{Transformation Matrix for Link Six}
+	\begin{align*}
+	A_6= \begin{bmatrix}
+		 c_{6} & -s_{6} & 0 & 0\\
+		 s_{6} & c_{6} & 0 & 0\\
+		 0 & 0 & 1 & l_6\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+	\end{align*}
+
+	\textbf{Transformation matrix between base and each links}
+		\begin{align*}
+			T^0_1 &= A_1 \\
+			&= \begin{bmatrix}
+		 c_{1} & 0 & -s_{1} & 0\\
+		 s_{1} & 0 & c_{1} & 0\\
+		 0 & -1 & 0 & l_1\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}
+		\end{align*}
+		\begin{align*}
+			T^0_2 &= A_1A_2 \\
+			&= T^0_1A_2 \\
+			&= \begin{bmatrix}
+		 c_{1} & 0 & -s_{1} & 0\\
+		 s_{1} & 0 & c_{1} & 0\\
+		 0 & -1 & 0 & l_1\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}\begin{bmatrix}
+		 c_{2} & -s_{2} & 0 & l_2c_2\\
+		 s_{2} & c_{2} & 0 & l_2s_2\\\
+		 0 & 0 & 1 & 0\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix} \\
+		&= \begin{bmatrix}
+			c_1c_2&-s_2c_1&-s_1&l_2c_1c_2 \\
+			s_1c_2&-s_1s_2&c_1&l_2s_1c_2 \\
+			-s_2&-c_2&0&l_1-l_2c_2 \\
+			0&0&0&1 \\
+		\end{bmatrix}
+		\end{align*}
+
+		\begin{align*}
+			T^0_3 &= A_1A_2A_3 \\
+				  &= T^0_2A_3 \\
+				  &= \begin{bmatrix}
+			c_1c_2&-s_2c_1&-s_1&l_2c_1c_2 \\
+			s_1c_2&-s_1s_2&c_1&l_2s_1c_2 \\
+			-s_2&-c_2&0&l_1-l_2c_2 \\
+			0&0&0&1 \\
+		\end{bmatrix}\begin{bmatrix}
+		 c_{3} & 0 & -s_{3} & 0\\
+		 s_{3} & 0 & c_{3} & 0\\
+		 0 & -1 & 0 & 0\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}\\
+		&=\begin{bmatrix}
+		c_1c_{23}&s_1&-s_{23}c_1&l_2c_1c_2\\
+		s_1c_{23}&-c_1&-s_1s_{23}&l_2s_1c_2\\
+		-s_{23}&0&-c_{23}&l_1-l_2c_2\\
+		0&0&0&1\\
+		\end{bmatrix}\\
+		\end{align*}
+
+		\begin{align*}
+			T^0_4 &= A_1A_2A_3A_4 \\
+				  &= T^0_3A_4 \\
+				  &= \begin{bmatrix}
+		c_1c_{23}&s_1&-s_{23}c_1&l_2c_1c_2\\
+		s_1c_{23}&-c_1&-s_1s_{23}&l_2s_1c_2\\
+		-s_{23}&0&-c_{23}&l_1-l_2c_2\\
+		0&0&0&1\\
+		\end{bmatrix}\begin{bmatrix}
+		 c_{4} & 0 & -s_{4} & 0\\
+		 s_{4} & 0 & c_{4} & 0\\
+		 0 & -1 & 0 & 0\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}\\
+		&= \begin{bmatrix}
+			s_1s_4 + c_1c_4c_{23}&s_{23}c_1&s_1c_4 - s_4c_1c_{23}&l_2c_1c_2)\\
+			s_1c_4c_{23} - s_4c_1&s_1s_{23}&-s_1s_4c_{23} - c_1c_4&l_2s_1c_2\\
+			-s_{23}c_4&c_{23}&s_4s_{23}&l_1 - l_2c_2\\
+			0&0&0&1\\
+		\end{bmatrix}
+		\end{align*}
+		\begin{align*}
+			T^0_5 &= A_1A_2A_3A_4A_5 \\
+				  &= T^0_4A_5 \\
+				  &= \begin{bmatrix}
+			s_1s_4 + c_1c_4c_{23}&s_{23}c_1&s_1c_4 - s_4c_1c_{23}&l_2c_1c_2)\\
+			s_1c_4c_{23} - s_4c_1&s_1s_{23}&-s_1s_4c_{23} - c_1c_4&l_2s_1c_2\\
+			-s_{23}c_4&c_{23}&s_4s_{23}&l_1 - l_2c_2\\
+			0&0&0&1\\
+		\end{bmatrix}\begin{bmatrix}
+		 c_{5} & 0 & s_{5} & 0\\
+		 s_{5} & 0 & -c_{5} & 0\\
+		 0 & 1 & 0 & 0\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix}\\
+		&= \begin{bmatrix}
+			(s_1s_4 + c_1c_4c_{23})c_5 + s_5s_{23}c_1&s_1c_4 - s_4c_1c_{23}&(s_1s_4 + c_1c_4c_{23})s_5 - s_{23}c_1c_5&l_2c_1c_2\\
+			(s_1c_4c_{23} - s_4c_1)c_5 + s_1s_5s_{23}&-s_1s_4c_{23} - c_1c_4&(s_1c_4c_{23} - s_4c_1)s_5 - s_1s_{23}c_5)&l_2s_1c_2\\
+			s_5c_{23} - s_{23}c_4c_5&s_4s_{23}&-s_5s_{23}c_4 - c_5c_{23}&l_1 - l_2c_2\\
+			0&0&0&1\\
+		\end{bmatrix}
+		\end{align*}
+		
+		\begin{align*}
+			T^0_6 &= A_1A_2A_3A_4A_5A_6 \\
+			  &= T^0_5A_6 \\
+			  &= \begin{bmatrix}
+			(s_1s_4 + c_1c_4c_{23})c_5 + s_5s_{23}c_1&s_1c_4 - s_4c_1c_{23}&(s_1s_4 + c_1c_4c_{23})s_5 - s_{23}c_1c_5&l_2c_1c_2\\
+			(s_1c_4c_{23} - s_4c_1)c_5 + s_1s_5s_{23}&-s_1s_4c_{23} - c_1c_4&(s_1c_4c_{23} - s_4c_1)s_5 - s_1s_{23}c_5)&l_2s_1c_2\\
+			s_5c_{23} - s_{23}c_4c_5&s_4s_{23}&-s_5s_{23}c_4 - c_5c_{23}&l_1 - l_2c_2\\
+			0&0&0&1\\
+		\end{bmatrix}\begin{bmatrix}
+		 c_{6} & -s_{6} & 0 & 0\\
+		 s_{6} & c_{6} & 0 & 0\\
+		 0 & 0 & 1 & l_6\\
+		 0 & 0 & 0 & 1\\
+		\end{bmatrix} \\
+		&= \begin{bmatrix}
+		((s_1s_4 + c_1c_4c_{23})c_5 + s_5s_{23}c_1)c_6 + (s_1c_4 - s_4c_1c_{23})s_6&-((s_1s_4 + c_1c_4c_{23})c_5 + s_5s_{23}c_1)s_6 + (s_1c_4 - s_4c_1c_{23})c_6& (s_1s_4 + c_1c_4c_{23})s_5 - s_{23}c_1c_5& \\l_2c_1c_2 - l_6(-(s_1s_4 + c_1c_4c_{23})s_5 + s_{23}c_1c_5)\\
+		((s_1c_4c_{23} - s_4c_1)c_5 + s_1s_5s_{23})c_6 - (s_1s_4c_{23} + c_1c_4)s_6&((-s_1c_4c_{23} + s_4c_1)c_5 - s_1s_5s_{23})s_6 - (s_1s_4c_{23} + c_1c_4)c_6&(s_1c_4c_{23} - s_4c_1)s_5 - s_1s_{23}c_5&\\l_2s_1c_2 - l_6((-s_1c_4c_{23} + s_4c_1)s_5 + s_1s_{23}c_5)\\
+		(s_5c_{23} - s_{23}c_4c_5)c_6 + s_4s_6s_{23}&(-s_5c_{23} + s_{23}c_4c_5)s_6 + s_4s_{23}c_6&-s_5s_{23}c_4 - c_5c_{23}&\\l_1 - l_2c_2 - l_6(s_5s_{23}c_4 + c_5c_{23})\\
+		0&0&0&1\\
+		\end{bmatrix}
+	\end{align*} \\
+	
+\end{document}
